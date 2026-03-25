@@ -118,9 +118,21 @@ def draw_base(screen: pygame.Surface, base_x: int) -> None:
     pygame.draw.circle(screen, bolt_color, (platform_x + 10, bolt_y_pos), bolt_r)
     pygame.draw.circle(screen, bolt_color, (platform_x + platform_w - 10, bolt_y_pos), bolt_r)
 
-    # Outline for pedestal sections
-    pygame.draw.rect(screen, BLACK, (platform_x, platform_y, platform_w, platform_h), 1)
-    pygame.draw.rect(screen, BLACK, (pedestal_x, pedestal_y, pedestal_w, pedestal_h), 1)
+    # Highlight edges (top/left) for platform
+    pygame.draw.line(screen, DARK_STEEL_HIGHLIGHT, (platform_x, platform_y), (platform_x + platform_w, platform_y), 1)
+    pygame.draw.line(screen, DARK_STEEL_HIGHLIGHT, (platform_x, platform_y), (platform_x, platform_y + platform_h), 1)
+
+    # Highlight edges (top/left) for pedestal
+    pygame.draw.line(screen, DARK_STEEL_HIGHLIGHT, (pedestal_x, pedestal_y), (pedestal_x + pedestal_w, pedestal_y), 1)
+    pygame.draw.line(screen, DARK_STEEL_HIGHLIGHT, (pedestal_x, pedestal_y), (pedestal_x, pedestal_y + pedestal_h), 1)
+
+    # Shadow edges (bottom/right) for platform
+    pygame.draw.line(screen, DARK_STEEL_SHADOW, (platform_x, platform_y + platform_h), (platform_x + platform_w, platform_y + platform_h), 1)
+    pygame.draw.line(screen, DARK_STEEL_SHADOW, (platform_x + platform_w, platform_y), (platform_x + platform_w, platform_y + platform_h), 1)
+
+    # Shadow edges (bottom/right) for pedestal
+    pygame.draw.line(screen, DARK_STEEL_SHADOW, (pedestal_x, pedestal_y + pedestal_h), (pedestal_x + pedestal_w, pedestal_y + pedestal_h), 1)
+    pygame.draw.line(screen, DARK_STEEL_SHADOW, (pedestal_x + pedestal_w, pedestal_y), (pedestal_x + pedestal_w, pedestal_y + pedestal_h), 1)
 
 
 def draw_arm1(
@@ -164,6 +176,20 @@ def draw_arm1(
     rotated = [rotate(cx, cy) for cx, cy in corners]
     pygame.draw.polygon(screen, SILVER, rotated)
     pygame.draw.polygon(screen, BLACK, rotated, 2)
+
+    # Highlight edge (top/left) - line along left edge of segment
+    highlight_edge = [
+        rotate(-half_w_base, 0.0),
+        rotate(-half_w_tip, -ARM1_LENGTH),
+    ]
+    pygame.draw.line(screen, SILVER_HIGHLIGHT, highlight_edge[0], highlight_edge[1], 2)
+
+    # Shadow edge (bottom/right) - line along right edge of segment
+    shadow_edge = [
+        rotate(half_w_base, 0.0),
+        rotate(half_w_tip, -ARM1_LENGTH),
+    ]
+    pygame.draw.line(screen, SILVER_SHADOW, shadow_edge[0], shadow_edge[1], 2)
 
     # Center panel line along the length of the segment
     panel_start = rotate(0.0, -8.0)
@@ -232,6 +258,20 @@ def draw_arm2(
     rotated = [rotate(cx, cy) for cx, cy in corners]
     pygame.draw.polygon(screen, CYAN_BLUE, rotated)
     pygame.draw.polygon(screen, BLACK, rotated, 2)
+
+    # Highlight edge (top/left) - line along left edge of segment
+    highlight_edge = [
+        rotate(-half_w_base, 0.0),
+        rotate(-half_w_tip, -ARM2_LENGTH),
+    ]
+    pygame.draw.line(screen, CYAN_BLUE_HIGHLIGHT, highlight_edge[0], highlight_edge[1], 2)
+
+    # Shadow edge (bottom/right) - line along right edge of segment
+    shadow_edge = [
+        rotate(half_w_base, 0.0),
+        rotate(half_w_tip, -ARM2_LENGTH),
+    ]
+    pygame.draw.line(screen, CYAN_BLUE_SHADOW, shadow_edge[0], shadow_edge[1], 2)
 
     # Center panel line along the length of the segment
     panel_start = rotate(0.0, -8.0)
