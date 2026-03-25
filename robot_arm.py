@@ -121,24 +121,50 @@ def draw_arm1(
     pivot_x = float(base_x)
     pivot_y = float(GROUND_Y - BASE_HEIGHT)
 
-    # Calculate the four corners of the arm rectangle, rotated around pivot
-    # Arm extends upward (negative Y) from pivot by default (angle=0 means straight up)
-    half_w = ARM1_WIDTH / 2.0
-    # Corners relative to pivot (unrotated: arm points up)
-    corners = [
-        (-half_w, 0.0),
-        (half_w, 0.0),
-        (half_w, -ARM1_LENGTH),
-        (-half_w, -ARM1_LENGTH),
-    ]
     cos_a = math.cos(arm1_angle)
     sin_a = math.sin(arm1_angle)
-    rotated = [
-        (pivot_x + cx * cos_a - cy * sin_a, pivot_y + cx * sin_a + cy * cos_a)
-        for cx, cy in corners
+
+    def rotate(cx: float, cy: float) -> tuple[float, float]:
+        return (pivot_x + cx * cos_a - cy * sin_a, pivot_y + cx * sin_a + cy * cos_a)
+
+    # Tapered shape: wider at base (pivot), narrower at tip
+    half_w_base = ARM1_WIDTH / 2.0 + 3.0  # wider at pivot end
+    half_w_tip = ARM1_WIDTH / 2.0 - 3.0   # narrower at tip
+
+    # Shadow/darker edge polygon (offset slightly for depth)
+    shadow_corners = [
+        (-half_w_base + 1, 1.0),
+        (half_w_base + 1, 1.0),
+        (half_w_tip + 1, -ARM1_LENGTH + 1),
+        (-half_w_tip + 1, -ARM1_LENGTH + 1),
     ]
+    shadow_rotated = [rotate(cx, cy) for cx, cy in shadow_corners]
+    pygame.draw.polygon(screen, SILVER_SHADOW, shadow_rotated)
+
+    # Main tapered arm polygon
+    corners = [
+        (-half_w_base, 0.0),
+        (half_w_base, 0.0),
+        (half_w_tip, -ARM1_LENGTH),
+        (-half_w_tip, -ARM1_LENGTH),
+    ]
+    rotated = [rotate(cx, cy) for cx, cy in corners]
     pygame.draw.polygon(screen, SILVER, rotated)
     pygame.draw.polygon(screen, BLACK, rotated, 2)
+
+    # Center panel line along the length of the segment
+    panel_start = rotate(0.0, -8.0)
+    panel_end = rotate(0.0, -ARM1_LENGTH + 8.0)
+    pygame.draw.line(screen, SILVER_SHADOW, panel_start, panel_end, 1)
+
+    # Rivet/bolt circles on the segment face
+    rivet_r = 3
+    rivet1_pos = rotate(0.0, -ARM1_LENGTH * 0.25)
+    rivet2_pos = rotate(0.0, -ARM1_LENGTH * 0.75)
+    pygame.draw.circle(screen, METALLIC_DARK, (int(rivet1_pos[0]), int(rivet1_pos[1])), rivet_r)
+    pygame.draw.circle(screen, SILVER_HIGHLIGHT, (int(rivet1_pos[0]), int(rivet1_pos[1])), rivet_r, 1)
+    pygame.draw.circle(screen, METALLIC_DARK, (int(rivet2_pos[0]), int(rivet2_pos[1])), rivet_r)
+    pygame.draw.circle(screen, SILVER_HIGHLIGHT, (int(rivet2_pos[0]), int(rivet2_pos[1])), rivet_r, 1)
 
     # Draw dark circle at pivot joint
     pygame.draw.circle(screen, METALLIC_DARK, (int(pivot_x), int(pivot_y)), JOINT_RADIUS)
