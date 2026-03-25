@@ -55,3 +55,17 @@ Started: Tue 25 Mar 2026 - Visual Redesign
   - Shadow polygon uses small +1px offset in both x and y before rotation for a subtle depth effect
   - Manual browser verification needed (no browser testing tools available)
 ---
+
+## 2026-03-25 - US-004
+- Redesigned arm segment 2 with tapered shape (wider at joint pivot, narrower at tip)
+- Added shadow polygon behind main shape using CYAN_BLUE_SHADOW for depth
+- Added center panel line running along segment length using CYAN_BLUE_SHADOW
+- Added 2 rivet circles at 25% and 75% along the segment with METALLIC_DARK fill and CYAN_BLUE_HIGHLIGHT outline
+- Introduced local `rotate()` helper matching arm1 pattern
+- Rotation with A/S keys unchanged, joint rendering unchanged
+- Files changed: robot_arm.py
+- **Learnings for future iterations:**
+  - draw_arm2 now follows the exact same pattern as draw_arm1 — tapered polygon, shadow, panel line, rivets, rotate() helper
+  - Used CYAN_BLUE_SHADOW for shadow/panel line and CYAN_BLUE_HIGHLIGHT for rivet outlines (matching color scheme per segment)
+  - Manual browser verification needed (no browser testing tools available)
+---
