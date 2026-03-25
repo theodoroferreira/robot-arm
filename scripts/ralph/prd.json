@@ -1,0 +1,108 @@
+{
+  "project": "Robot Arm",
+  "branchName": "ralph/robot-visual-redesign",
+  "description": "Industrial robot arm visual redesign - metallic color scheme, tapered segments, bolts/rivets, panel lines, and mechanical joints",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Update color palette to metallic theme",
+      "description": "As a developer, I need to replace the current color constants with the new metallic palette so all subsequent visual changes use the correct colors.",
+      "acceptanceCriteria": [
+        "Add Dark Steel color constant (approximately RGB 70, 75, 85) for the base",
+        "Add Silver color constant (approximately RGB 180, 185, 195) for arm 1",
+        "Add Cyan/Blue color constant (approximately RGB 60, 170, 210) for arm 2",
+        "Add highlight and shadow variant colors for each primary color (lighter and darker versions)",
+        "Add a metallic dark color for joint outer rings (approximately RGB 40, 42, 48)",
+        "Remove or replace unused old color constants (RED, LIGHT_GRAY, GOLD)",
+        "Existing drawing functions reference the new colors (base uses Dark Steel, arm1 uses Silver, arm2 uses Cyan)",
+        "Robot arm still renders and all controls work as before",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Redesign base with industrial pedestal and tread details",
+      "description": "As a user, I want the base to look like a heavy industrial pedestal with treads so the robot feels grounded and mechanical.",
+      "acceptanceCriteria": [
+        "Base is wider and taller than current rectangle, with a trapezoidal or stepped shape",
+        "Base uses Dark Steel color",
+        "Base has visible tread or platform detail (horizontal grooves or bolt circles on the sides)",
+        "A subtle darker shadow/outline gives the base a 3D feel",
+        "Base still moves left/right with arrow keys and stays clamped to screen edges",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Redesign arm segment 1 with tapered shape and industrial details",
+      "description": "As a user, I want the first arm segment to look like a mechanical actuator with a tapered shape, panel lines, and rivets.",
+      "acceptanceCriteria": [
+        "Arm 1 uses Silver color",
+        "Arm 1 shape is tapered (wider at base pivot, narrower at tip)",
+        "A center panel line runs along the length of the segment, rotating with it",
+        "At least 2 small rivet/bolt circles drawn on the segment face, rotating with it",
+        "A darker edge/outline gives the segment depth",
+        "Rotation with Q/W keys works identically to current behavior",
+        "Arm 1 return value (end point) is still correct for chaining arm 2",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Redesign arm segment 2 with tapered shape and industrial details",
+      "description": "As a user, I want the second arm segment to match the industrial style with a distinct cyan/blue metallic color.",
+      "acceptanceCriteria": [
+        "Arm 2 uses Cyan/Blue color",
+        "Arm 2 shape is tapered (wider at joint, narrower at tip)",
+        "A center panel line runs along the length of the segment, rotating with it",
+        "At least 2 small rivet/bolt circles drawn on the segment face, rotating with it",
+        "A darker edge/outline gives the segment depth",
+        "Rotation with A/S keys works identically to current behavior",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Redesign joint connections as layered mechanical pivots",
+      "description": "As a user, I want the joints between segments to look like heavy mechanical pivot points with layered rings.",
+      "acceptanceCriteria": [
+        "Each joint is drawn as a layered circle: outer dark ring, mid metallic fill, inner bolt/axle circle",
+        "Joint at base-arm1 connection uses a steel/dark color scheme",
+        "Joint at arm1-arm2 connection uses a matching metallic scheme",
+        "Joints are slightly larger than current (increase JOINT_RADIUS)",
+        "Joints render on top of arm segments (correct draw order)",
+        "Typecheck passes"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Add shadow and highlight edges to all segments",
+      "description": "As a user, I want each arm segment and the base to have subtle shadow and highlight effects so the robot looks less flat.",
+      "acceptanceCriteria": [
+        "Each segment (base, arm 1, arm 2) has a slightly darker bottom/right edge drawn as a secondary polygon offset by 2-3 pixels",
+        "Highlights (lighter stripe) appear on the top/left edge of each segment",
+        "Shadows rotate correctly with the arm segments",
+        "No performance degradation (still runs at 60 FPS)",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

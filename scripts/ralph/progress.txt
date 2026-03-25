@@ -1,0 +1,24 @@
+# Ralph Progress Log
+Started: Tue 25 Mar 2026 - Visual Redesign
+
+## Codebase Patterns
+- Use `source venv/bin/activate && mypy robot_arm.py` to typecheck (venv has mypy and pygame stubs)
+- All drawing functions are in `robot_arm.py` — no separate modules
+- Arm segments use rotated polygon corners pattern: define corners relative to pivot, rotate with cos/sin, draw with `pygame.draw.polygon`
+- Color constants are defined at module level as `tuple[int, int, int]`
+- `draw_arm1` returns end point `(float, float)` that chains into `draw_arm2`
+---
+
+## 2026-03-25 - US-001
+- Replaced old color palette (RED, LIGHT_GRAY, GOLD, BLUE, DARK_GRAY) with metallic theme
+- New primary colors: DARK_STEEL (70,75,85), SILVER (180,185,195), CYAN_BLUE (60,170,210), METALLIC_DARK (40,42,48)
+- Added highlight variants: DARK_STEEL_HIGHLIGHT, SILVER_HIGHLIGHT, CYAN_BLUE_HIGHLIGHT
+- Added shadow variants: DARK_STEEL_SHADOW, SILVER_SHADOW, CYAN_BLUE_SHADOW
+- Updated draw_base to use DARK_STEEL, draw_arm1 to use SILVER, draw_arm2 to use CYAN_BLUE
+- Updated joint circles to use METALLIC_DARK
+- Files changed: robot_arm.py
+- **Learnings for future iterations:**
+  - mypy is installed in venv, must activate venv first to run typecheck
+  - pygame stub issue is resolved in venv — `mypy robot_arm.py` passes clean
+  - Kept WHITE, BROWN, BLACK as they're still used (ground, background, outlines)
+---
