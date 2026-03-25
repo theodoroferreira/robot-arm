@@ -11,6 +11,7 @@ Started: Tue 25 Mar 2026 - Visual Redesign
 - Shadow/3D effect pattern: draw a darker offset rect behind the main rect (offset ~3px)
 - Tapered arm pattern: use wider half-width at pivot end and narrower at tip for trapezoidal polygon
 - Use a local `rotate(cx, cy)` helper inside draw functions to keep rotation code DRY
+- Joint drawing uses shared `draw_joint()` helper — layered circles: outer METALLIC_DARK, mid DARK_STEEL with highlight edge, inner axle with highlight outline
 ---
 
 ## 2026-03-25 - US-001
@@ -67,5 +68,20 @@ Started: Tue 25 Mar 2026 - Visual Redesign
 - **Learnings for future iterations:**
   - draw_arm2 now follows the exact same pattern as draw_arm1 — tapered polygon, shadow, panel line, rivets, rotate() helper
   - Used CYAN_BLUE_SHADOW for shadow/panel line and CYAN_BLUE_HIGHLIGHT for rivet outlines (matching color scheme per segment)
+  - Manual browser verification needed (no browser testing tools available)
+---
+
+## 2026-03-25 - US-005
+- Redesigned joint connections as layered mechanical pivot points
+- Increased JOINT_RADIUS from 8 to 12 for larger, more prominent joints
+- Added `draw_joint()` helper function with 3-layer design: outer dark ring (METALLIC_DARK), mid metallic fill (DARK_STEEL) with highlight edge, inner axle/bolt circle with highlight outline
+- Replaced single-circle joint draws in both draw_arm1 and draw_arm2 with draw_joint() calls
+- Both joints use steel/dark color scheme matching industrial aesthetic
+- Joints render on top of arm segments (drawn last in each draw function)
+- Files changed: robot_arm.py
+- **Learnings for future iterations:**
+  - Extracting shared drawing logic into helper functions (like `draw_joint`) keeps arm1/arm2 code consistent
+  - Layered circles pattern: draw largest first, then successively smaller on top — pygame draws in call order
+  - JOINT_RADIUS=12 works well with the tapered arm widths (half_w_base ~13px, half_w_tip ~7px)
   - Manual browser verification needed (no browser testing tools available)
 ---
