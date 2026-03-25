@@ -46,12 +46,25 @@ BASE_SPEED: int = 5
 ARM1_LENGTH: int = 120
 ARM1_WIDTH: int = 20
 ARM1_ROTATION_SPEED: float = 0.03
-JOINT_RADIUS: int = 8
+JOINT_RADIUS: int = 12
 
 # Arm segment 2
 ARM2_LENGTH: int = 100
 ARM2_WIDTH: int = 16
 ARM2_ROTATION_SPEED: float = 0.03
+
+
+def draw_joint(screen: pygame.Surface, x: int, y: int) -> None:
+    """Draw a layered mechanical pivot joint: outer dark ring, mid metallic fill, inner axle."""
+    # Outer dark ring
+    pygame.draw.circle(screen, METALLIC_DARK, (x, y), JOINT_RADIUS)
+    # Mid metallic fill
+    pygame.draw.circle(screen, DARK_STEEL, (x, y), JOINT_RADIUS - 3)
+    # Highlight edge on the mid ring
+    pygame.draw.circle(screen, DARK_STEEL_HIGHLIGHT, (x, y), JOINT_RADIUS - 3, 1)
+    # Inner axle/bolt circle
+    pygame.draw.circle(screen, METALLIC_DARK, (x, y), 4)
+    pygame.draw.circle(screen, DARK_STEEL_HIGHLIGHT, (x, y), 4, 1)
 
 
 def draw_ground(screen: pygame.Surface) -> None:
@@ -166,8 +179,8 @@ def draw_arm1(
     pygame.draw.circle(screen, METALLIC_DARK, (int(rivet2_pos[0]), int(rivet2_pos[1])), rivet_r)
     pygame.draw.circle(screen, SILVER_HIGHLIGHT, (int(rivet2_pos[0]), int(rivet2_pos[1])), rivet_r, 1)
 
-    # Draw dark circle at pivot joint
-    pygame.draw.circle(screen, METALLIC_DARK, (int(pivot_x), int(pivot_y)), JOINT_RADIUS)
+    # Draw layered mechanical pivot joint
+    draw_joint(screen, int(pivot_x), int(pivot_y))
 
     # End point of arm 1
     end_x = pivot_x + 0.0 * cos_a - (-ARM1_LENGTH) * sin_a
@@ -234,8 +247,8 @@ def draw_arm2(
     pygame.draw.circle(screen, METALLIC_DARK, (int(rivet2_pos[0]), int(rivet2_pos[1])), rivet_r)
     pygame.draw.circle(screen, CYAN_BLUE_HIGHLIGHT, (int(rivet2_pos[0]), int(rivet2_pos[1])), rivet_r, 1)
 
-    # Draw metallic dark circle at pivot joint (arm1-arm2 joint)
-    pygame.draw.circle(screen, METALLIC_DARK, (int(pivot_x), int(pivot_y)), JOINT_RADIUS)
+    # Draw layered mechanical pivot joint (arm1-arm2 joint)
+    draw_joint(screen, int(pivot_x), int(pivot_y))
 
 
 def draw_axes(screen: pygame.Surface, font: pygame.font.Font) -> None:
