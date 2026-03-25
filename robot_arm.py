@@ -38,8 +38,8 @@ BASE_X: int = SCREEN_WIDTH // 2
 BASE_Y: int = GROUND_Y
 
 # Base dimensions
-BASE_WIDTH: int = 80
-BASE_HEIGHT: int = 30
+BASE_WIDTH: int = 120
+BASE_HEIGHT: int = 50
 BASE_SPEED: int = 5
 
 # Arm segment 1
@@ -60,10 +60,54 @@ def draw_ground(screen: pygame.Surface) -> None:
 
 
 def draw_base(screen: pygame.Surface, base_x: int) -> None:
-    """Draw the red rectangular base sitting on the ground."""
-    rect_x = base_x - BASE_WIDTH // 2
-    rect_y = GROUND_Y - BASE_HEIGHT
-    pygame.draw.rect(screen, DARK_STEEL, (rect_x, rect_y, BASE_WIDTH, BASE_HEIGHT))
+    """Draw an industrial pedestal base with stepped shape and tread details."""
+    # Bottom platform (wider)
+    platform_w = BASE_WIDTH
+    platform_h = 18
+    platform_x = base_x - platform_w // 2
+    platform_y = GROUND_Y - platform_h
+
+    # Shadow/outline for 3D feel (offset darker shape behind)
+    shadow_offset = 3
+    pygame.draw.rect(
+        screen,
+        DARK_STEEL_SHADOW,
+        (platform_x + shadow_offset, platform_y + shadow_offset, platform_w, platform_h),
+    )
+    pygame.draw.rect(screen, DARK_STEEL, (platform_x, platform_y, platform_w, platform_h))
+
+    # Top pedestal (narrower, trapezoidal effect via stepped shape)
+    pedestal_w = BASE_WIDTH - 30
+    pedestal_h = BASE_HEIGHT - platform_h
+    pedestal_x = base_x - pedestal_w // 2
+    pedestal_y = platform_y - pedestal_h
+
+    # Shadow for top pedestal
+    pygame.draw.rect(
+        screen,
+        DARK_STEEL_SHADOW,
+        (pedestal_x + shadow_offset, pedestal_y + shadow_offset, pedestal_w, pedestal_h),
+    )
+    pygame.draw.rect(screen, DARK_STEEL, (pedestal_x, pedestal_y, pedestal_w, pedestal_h))
+
+    # Tread grooves on the bottom platform (horizontal lines)
+    groove_color = DARK_STEEL_SHADOW
+    for i in range(3):
+        groove_y = platform_y + 4 + i * 5
+        pygame.draw.line(
+            screen, groove_color, (platform_x + 4, groove_y), (platform_x + platform_w - 4, groove_y), 1
+        )
+
+    # Bolt circles on the platform sides
+    bolt_color = METALLIC_DARK
+    bolt_r = 3
+    bolt_y_pos = platform_y + platform_h // 2
+    pygame.draw.circle(screen, bolt_color, (platform_x + 10, bolt_y_pos), bolt_r)
+    pygame.draw.circle(screen, bolt_color, (platform_x + platform_w - 10, bolt_y_pos), bolt_r)
+
+    # Outline for pedestal sections
+    pygame.draw.rect(screen, BLACK, (platform_x, platform_y, platform_w, platform_h), 1)
+    pygame.draw.rect(screen, BLACK, (pedestal_x, pedestal_y, pedestal_w, pedestal_h), 1)
 
 
 def draw_arm1(
