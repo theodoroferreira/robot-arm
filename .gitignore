@@ -1,0 +1,6 @@
+prd.json
+progress.txt
+.mypy_cache
+/scripts
+/tasks
+/venv
