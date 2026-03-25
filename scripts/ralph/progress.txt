@@ -9,6 +9,8 @@ Started: Tue 25 Mar 2026 - Visual Redesign
 - `draw_arm1` returns end point `(float, float)` that chains into `draw_arm2`
 - Base uses stepped shape: wider platform bottom + narrower pedestal top. Pivot is at `GROUND_Y - BASE_HEIGHT` (top of pedestal).
 - Shadow/3D effect pattern: draw a darker offset rect behind the main rect (offset ~3px)
+- Tapered arm pattern: use wider half-width at pivot end and narrower at tip for trapezoidal polygon
+- Use a local `rotate(cx, cy)` helper inside draw functions to keep rotation code DRY
 ---
 
 ## 2026-03-25 - US-001
@@ -36,5 +38,20 @@ Started: Tue 25 Mar 2026 - Visual Redesign
 - **Learnings for future iterations:**
   - Pivot point in draw_arm1 uses `GROUND_Y - BASE_HEIGHT`, so changing BASE_HEIGHT automatically adjusts the arm attachment point
   - Shadow offset pattern: draw darker rect at (+3, +3) before the main rect for a simple 3D effect
+  - Manual browser verification needed (no browser testing tools available)
+---
+
+## 2026-03-25 - US-003
+- Redesigned arm segment 1 with tapered shape (wider at pivot, narrower at tip)
+- Added shadow polygon behind main shape using SILVER_SHADOW for depth
+- Added center panel line running along segment length
+- Added 2 rivet circles at 25% and 75% along the segment with METALLIC_DARK fill and SILVER_HIGHLIGHT outline
+- Introduced local `rotate()` helper to simplify coordinate transformations
+- End point calculation unchanged — arm2 chaining still correct
+- Files changed: robot_arm.py
+- **Learnings for future iterations:**
+  - Tapered shape: adjust half_w_base and half_w_tip by ±3px from the ARM_WIDTH/2 center
+  - Panel line and rivets use the same rotate() helper, placed at fractional positions along the arm length
+  - Shadow polygon uses small +1px offset in both x and y before rotation for a subtle depth effect
   - Manual browser verification needed (no browser testing tools available)
 ---
