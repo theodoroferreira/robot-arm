@@ -85,3 +85,17 @@ Started: Tue 25 Mar 2026 - Visual Redesign
   - JOINT_RADIUS=12 works well with the tapered arm widths (half_w_base ~13px, half_w_tip ~7px)
   - Manual browser verification needed (no browser testing tools available)
 ---
+
+## 2026-03-25 - US-006
+- Added highlight edges (top/left) and shadow edges (bottom/right) to all three segments
+- Base: highlight lines on top/left of platform and pedestal rects, shadow lines on bottom/right; replaced old black outlines
+- Arm 1: highlight line along left edge (SILVER_HIGHLIGHT), shadow line along right edge (SILVER_SHADOW), both rotate with segment
+- Arm 2: highlight line along left edge (CYAN_BLUE_HIGHLIGHT), shadow line along right edge (CYAN_BLUE_SHADOW), both rotate with segment
+- No performance impact — just additional line draws per frame
+- Files changed: robot_arm.py
+- **Learnings for future iterations:**
+  - Edge highlight/shadow pattern for rotating segments: draw lines between corner pairs (e.g., left-base to left-tip) using the existing rotate() helper
+  - For non-rotating rects (base), use pygame.draw.line along the edges directly
+  - Width=2 for edge lines gives good visibility without overwhelming the segment
+  - Manual browser verification needed (no browser testing tools available)
+---
