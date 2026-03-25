@@ -7,6 +7,8 @@ Started: Tue 25 Mar 2026 - Visual Redesign
 - Arm segments use rotated polygon corners pattern: define corners relative to pivot, rotate with cos/sin, draw with `pygame.draw.polygon`
 - Color constants are defined at module level as `tuple[int, int, int]`
 - `draw_arm1` returns end point `(float, float)` that chains into `draw_arm2`
+- Base uses stepped shape: wider platform bottom + narrower pedestal top. Pivot is at `GROUND_Y - BASE_HEIGHT` (top of pedestal).
+- Shadow/3D effect pattern: draw a darker offset rect behind the main rect (offset ~3px)
 ---
 
 ## 2026-03-25 - US-001
@@ -21,4 +23,18 @@ Started: Tue 25 Mar 2026 - Visual Redesign
   - mypy is installed in venv, must activate venv first to run typecheck
   - pygame stub issue is resolved in venv — `mypy robot_arm.py` passes clean
   - Kept WHITE, BROWN, BLACK as they're still used (ground, background, outlines)
+---
+
+## 2026-03-25 - US-002
+- Redesigned base as industrial pedestal with stepped shape (wider platform + narrower pedestal)
+- Increased BASE_WIDTH from 80→120 and BASE_HEIGHT from 30→50
+- Added shadow rects offset by 3px using DARK_STEEL_SHADOW for 3D depth
+- Added 3 horizontal tread grooves on the platform face
+- Added 2 bolt circles on platform sides using METALLIC_DARK
+- Added black outlines for both platform and pedestal sections
+- Files changed: robot_arm.py
+- **Learnings for future iterations:**
+  - Pivot point in draw_arm1 uses `GROUND_Y - BASE_HEIGHT`, so changing BASE_HEIGHT automatically adjusts the arm attachment point
+  - Shadow offset pattern: draw darker rect at (+3, +3) before the main rect for a simple 3D effect
+  - Manual browser verification needed (no browser testing tools available)
 ---
